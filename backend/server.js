@@ -11,6 +11,7 @@ const app = express();
 // CORS configuration
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://team-task-manager-production-ef77.up.railway.app',
   'https://team-task-manager-production-207c.up.railway.app',
   'http://localhost:3000',
   'http://localhost:5500',
