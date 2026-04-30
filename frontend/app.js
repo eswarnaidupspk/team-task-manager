@@ -1,8 +1,7 @@
 // ===== CONFIG =====
-// Change this to your deployed backend URL on Railway
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000/api'
-  : '/api';
+  : 'https://team-task-manager-production-207c.up.railway.app/api';
 
 // ===== STATE =====
 let currentUser = null;
