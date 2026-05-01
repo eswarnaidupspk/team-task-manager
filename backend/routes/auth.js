@@ -15,7 +15,7 @@ const generateToken = (id) => {
 // @access  Public
 router.post('/signup', [
   body('name').trim().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
-  body('email').isEmail().normalizeEmail().withMessage('Enter a valid email'),
+  body('email').isEmail().toLowerCase().withMessage('Enter a valid email'),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -23,7 +23,8 @@ router.post('/signup', [
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { name, email, password } = req.body;
+  const { name, password } = req.body;
+  const email = req.body.email.toLowerCase().trim();
 
   try {
     const existingUser = await User.findOne({ email });
@@ -52,7 +53,7 @@ router.post('/signup', [
 // @desc    Login user
 // @access  Public
 router.post('/login', [
-  body('email').isEmail().normalizeEmail().withMessage('Enter a valid email'),
+  body('email').isEmail().withMessage('Enter a valid email'),
   body('password').notEmpty().withMessage('Password is required')
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -60,7 +61,8 @@ router.post('/login', [
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { email, password } = req.body;
+  const email = req.body.email.toLowerCase().trim();
+  const { password } = req.body;
 
   try {
     const user = await User.findOne({ email }).select('+password');
