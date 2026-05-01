@@ -47,9 +47,11 @@ app.get('/api/health', (req, res) => {
 
 // Serve frontend in production (optional static serving)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend')));
+  // Works whether deployed from repo root (Railway with railway.json) or backend/ subfolder
+  const frontendPath = path.join(__dirname, '../frontend');
+  app.use(express.static(frontendPath));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'));
   });
 }
 
