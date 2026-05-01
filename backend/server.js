@@ -45,15 +45,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Team Task Manager API is running' });
 });
 
-// Serve frontend in production (optional static serving)
-if (process.env.NODE_ENV === 'production') {
-  // Works whether deployed from repo root (Railway with railway.json) or backend/ subfolder
-  const frontendPath = path.join(__dirname, '../frontend');
-  app.use(express.static(frontendPath));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
-}
+// NOTE: Frontend is served separately (ef77 service).
+// This backend (207c) only handles API routes.
+// Fallback for unknown routes
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'API route not found' });
+});
 
 // Global error handler
 app.use((err, req, res, next) => {
